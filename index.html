@@ -1869,64 +1869,26 @@ let dropdown_8_values = []
 callContent('allservices', (data)=>{
   dropdown_2 = data; dropdownLoadingVars[1]=true;
 })
-function servicesDropdownLoader(data) {
-  let categoriesID = Object.keys(data) // Array
-  let categoriesNames = []
-  for (id in categoriesID){
-    if(locale == "en"){
-      categoriesNames.push(data[categoriesID[id]].category.TS_category_english_name)
-    }else if(locale == "ar"){
-      categoriesNames.push(data[categoriesID[id]].category.TS_category_arabic_name)
-    }
-  } 
-  add_dropdown_list(categoriesNames, categoriesID,"serviceCat", "disabled", "servicesCat")
-  var parentElement = document.getElementById("service");
-  parentElement.innerHTML=""
-  document.getElementById('serviceCat').addEventListener('change',function(){
-    let currentCategory = document.getElementById("serviceCat").value;
-    let myServicesID = []
-    let myServiceNames = []
-    // Sort the services array by TS_service_id
-    const sortedServices = data[currentCategory].services.sort((a, b) => a.TS_service_id - b.TS_service_id);
 
-    for (let i = 0; i < sortedServices.length; i++) {
-      const element = sortedServices[i];
-      myServicesID.push(element.TS_service_id);
-      
-      if (locale === "en") {
-        myServiceNames.push(element.TS_service_english_name);
-      } else if (locale === "ar") {
-        myServiceNames.push(element.TS_service_arabic_name);
-      }
-    }
+function servicesDropdownLoader() {
+  dropdown_8 =  Object.values(translations.ar['servicesCat'])
 
-    add_dropdown_list(myServiceNames,myServicesID,"service", "disabled", "services")// if ar lang
-  })
-  document.getElementById('service').addEventListener('change',function(){
-        $('#date').trigger('change'); 
-  })
-  const event = new Event('change');
-  document.getElementById('serviceCat').dispatchEvent(event);
+        for(i in dropdown_8){
+          dropdown_8_values.push(getKeyByValue(service_ID_map,dropdown_8[i]));
+        }
+  let dropDownTimer = setInterval(function () {
+          let result = dropdownLoadingVars.every(function (e) {
+            return e == true;
+          });
+          //// console.log(dropdownLoadingVars)
+          if( result ){
+              add_dropdown_list(dropdown_8,dropdown_8_values,"serviceCat", "disabled", "servicesCat")
+              document.getElementById('serviceCat').addEventListener('change',function(){setValuesForByLookUp(dropdown_2)})
+            clearInterval(dropDownTimer)
+          }
+        }, 1000);
+
 }
-// function servicesDropdownLoader() {
-//   dropdown_8 =  Object.values(translations.ar['servicesCat'])
-
-//         for(i in dropdown_8){
-//           dropdown_8_values.push(getKeyByValue(service_ID_map,dropdown_8[i]));
-//         }
-//   let dropDownTimer = setInterval(function () {
-//           let result = dropdownLoadingVars.every(function (e) {
-//             return e == true;
-//           });
-//           //// console.log(dropdownLoadingVars)
-//           if( result ){
-//               add_dropdown_list(dropdown_8,dropdown_8_values,"serviceCat", "disabled", "servicesCat")
-//               document.getElementById('serviceCat').addEventListener('change',function(){setValuesForByLookUp(dropdown_2)})
-//             clearInterval(dropDownTimer)
-//           }
-//         }, 1000);
-
-// }
   function setValuesForByLookUp(arrdropdown_2){
     //// console.log(arrdropdown_2)
     var tee = document.getElementById("serviceCat").value;
