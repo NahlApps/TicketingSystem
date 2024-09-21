@@ -2117,32 +2117,6 @@ function startTimer(duration, display) {
     }, 1000);
 }
 // startTimer(3,document.getElementById("resendTimer"))
-callContent("departments", (data) => {
-    let locations = data;
-    
-    // Sort the locations array by id (index 0)
-    locations.sort((a, b) => a[0] - b[0]);
-
-    // Prepare the select options
-    let selectData = [];
-    for (let i = 0; i < locations.length; i++) {
-        selectData[i] = { id: locations[i][0], text: locations[i][2] };
-    }
-
-    // Populate the select2 dropdown
-    $('.js-example-basic-single').select2({
-        data: selectData,
-        width: "50%"
-    });
-
-    $('#area').trigger('change');
-
-    // Add translations for areas
-    for (let i = 0; i < locations.length; i++) {
-        translations.en["locationsTrans"][locations[i][1].toLowerCase()] = locations[i][1];
-        translations.ar["locationsTrans"][locations[i][1].toLowerCase()] = locations[i][2];
-    }
-});
 
 </script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBBHLoO038vsCovHN-SLUgAXqexlA2v0_4&callback=myMap"></script>
